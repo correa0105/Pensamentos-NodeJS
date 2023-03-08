@@ -4,11 +4,11 @@ const bcrypt = require('bcryptjs')
 
 module.exports = class ToughtController {
     static async login(req, res) {
-        res.render('login')
+        res.render('login', { session: req.session.userid })
     }
 
     static async register(req, res) {
-        res.render('register')
+        res.render('register', { session: req.session.userid })
     }
 
     static async registerSave(req, res) {
@@ -27,5 +27,35 @@ module.exports = class ToughtController {
             res.render('register')
             return
         }
+
+        const salt = bcrypt.genSaltSync(10)
+        const hashedPassword = bcrypt.hashSync(password, salt)
+
+        const user = {
+            name,
+            email,
+            password: hashedPassword
+        }
+
+        try {
+
+            const creatdeUser = await User.create(user)
+
+            req.session.userid = creatdeUser.id
+
+            req.flash('message', 'Cadastro realizado com sucesso!')
+
+            req.session.save(() => {
+                res.redirect('/')
+            })
+
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    static async logout(req, res) {
+        req.session.destroy()
+        res.redirect('/login')
     }
 }
