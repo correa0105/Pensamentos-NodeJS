@@ -2,10 +2,18 @@ body {
     background-color: #eee;
 }
 
-.toughts,
+.home,
 .register,
-.login {
+.login,
+.dashboard,
+.createTought {
     min-height: 82vh;
+}
+
+.main-container-box {
+    display: flex;
+    width: 85%;
+    margin: 0 auto;
 }
 
 .nav-item a {

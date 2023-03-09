@@ -4,14 +4,49 @@ const bcrypt = require('bcryptjs')
 
 module.exports = class ToughtController {
     static async login(req, res) {
-        res.render('login', { session: req.session.userid })
+        res.render('login')
+    }
+
+    static async loginPost(req, res) {
+        const { email, password } = req.body
+
+        const user = await User.findOne({ where: { email: email }})
+
+        if(!user) {
+            req.flash('message', 'Usuário não encontrado')
+            res.render('login')
+            return
+        }
+
+        const passwordMatch = bcrypt.compareSync(password, user.password)
+
+        if(!passwordMatch) {
+            req.flash('message', 'Senha inválida')
+            res.render('login')
+            return
+        }
+
+        try {
+
+            req.session.userid = user.id
+
+            req.flash('message', 'Autenticado com sucesso!')
+
+            req.session.save(() => {
+                res.redirect('/')
+            })
+            
+        } catch (err) {
+            console.err
+        }
+
     }
 
     static async register(req, res) {
-        res.render('register', { session: req.session.userid })
+        res.render('register')
     }
 
-    static async registerSave(req, res) {
+    static async registerPost(req, res) {
         const { name, email, password, confirmpassword } = req.body
 
         if(password != confirmpassword) {

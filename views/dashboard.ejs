@@ -1,0 +1,36 @@
+<%- include("includes/head"); %>
+<%- include("partials/header"); %>
+
+<div class="dashboard main-container-box">
+
+    <section class="mt-4 d-flex flex-column w-100">
+        <%- include("partials/flashMessage"); %>
+        <div class="d-flex">
+            <a href="/toughts/add" class="btn btn-warning">Criar Pensamento</a>
+        </div>
+        <div class="pt-3 border-top border-warning mt-3">
+            <h1 class="h3">Seus pensamentos</h1>
+        </div>
+        <ul class="list-group list-group-flush">
+            <% for(tought of toughts) { %>
+            <li class="bg-transparent text-warning list-group-item d-flex">
+                <%= tought.title %>
+                <div class="ms-auto d-flex gap-2">
+                    <a class="btn btn-warning" href="/toughts/edit/<%= tought.id %>">Editar</a>
+                    <form action="/toughts/remove" method="POST">
+                        <input type="hidden" name="id" value="<%= tought.id %>">
+                        <input type="submit" value="Excluir" class="btn btn-warning">
+                    </form>
+                </div>
+            </li>
+            <% } %>
+        </ul>
+        <% if(emptyToughts) { %>
+            <p>Ainda não há pensamentos seus. Comece a criar <a class="text-warning" href="/toughts/add">por aqui!</a></p>
+        <% } %>
+    </section>
+
+</div>
+
+<%- include("partials/footer"); %>
+<%- include("includes/footer"); %>

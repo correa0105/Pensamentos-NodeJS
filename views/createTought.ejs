@@ -1,0 +1,24 @@
+<%- include("includes/head"); %>
+<%- include("partials/header"); %>
+<%- include("partials/flashMessage"); %>
+
+<div class="createTought main-container-box">
+
+    <section class="mt-4 d-flex flex-column w-100">
+        <a class="text-warning" href="/toughts/dashboard">Voltar</a>
+        <form action="/toughts/add" method="POST" class="pt-4 border-top d-flex flex-column align-items-start border-warning mt-3">
+            <h1 class="h3 mb-3">Criando Pensamento</h1>
+            <div class="col-12 col-md-4">
+                <div class="form-outline">
+                    <input type="text" name="title" class="form-control" />
+                    <label class="form-label" for="title">Seu pensamento</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-warning mt-3">Enviar</button>
+        </form>
+    </section>
+
+</div>
+
+<%- include("partials/footer"); %>
+<%- include("includes/footer"); %>
