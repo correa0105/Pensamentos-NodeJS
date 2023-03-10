@@ -3,7 +3,12 @@ const User = require('../models/User')
 
 module.exports = class ToughtController {
     static async showToughts(req, res) {
-        res.render('home')
+        const toughtsData = await Tought.findAll({ include: User })
+        const toughts = toughtsData.map(result => result.get({ plain: true }))
+
+        console.log(toughts)
+
+        res.render('home', { toughts })
     }
 
     static async dashboard(req, res) {
@@ -63,6 +68,35 @@ module.exports = class ToughtController {
             })
         } catch (err) {
             console.log(err)            
+        }
+    }
+
+    static async editTought(req, res) {
+        const id = req.params.id
+        
+        const tought = await Tought.findOne({ where: { id: id } })
+        
+        res.render('editTought', { tought })
+    }
+
+    static async editToughtPost(req, res) {
+        
+        const id = req.body.id
+
+        const tought = {
+            title: req.body.title
+        }
+
+        try {
+            await Tought.update(tought, { where: { id: id }})
+        
+            req.flash('message', 'Pensamento atualizado com sucesso!')
+            
+            req.session.save(() => {
+                res.redirect('/toughts/dashboard')
+            })
+        } catch (err) {
+            console.log(err)
         }
     }
 }

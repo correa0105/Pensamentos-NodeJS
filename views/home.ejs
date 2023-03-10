@@ -6,7 +6,26 @@
     <section class="mt-4 d-flex flex-column w-100">
         <%- include("partials/flashMessage"); %>
         
-        <h3>Home</h3>
+        <div class="pt-3 border-top border-warning mt-3">
+            <h1 class="h3">Home</h1>
+        </div>
+        <ul class="list-group list-group-flush">
+            <% for(tought of toughts) { %>
+            <li class="bg-transparent text-warning list-group-item d-flex justify-content-between">
+                <div>
+                    <div><%= tought.title %></div>
+                    <div class="text-dark">Criado por: <%= tought.User.name %></div>
+                </div>
+                <div class="d-flex gap-2 align-items-center">
+                    <a class="btn btn-warning" href="/toughts/edit/<%= tought.id %>">Editar</a>
+                    <form action="/toughts/remove" method="POST">
+                        <input type="hidden" name="id" value="<%= tought.id %>">
+                        <input type="submit" value="Excluir" class="btn btn-warning">
+                    </form>
+                </div>
+            </li>
+            <% } %>
+        </ul>
     </section>
 
 </div>
