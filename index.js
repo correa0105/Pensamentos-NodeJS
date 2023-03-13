@@ -30,7 +30,7 @@ app.use(
         saveUninitialized: false,
         store: new FileStore({
             logFn: () => { },
-            path: require('path').join(require('os').tmpdir(), 'sessions')
+            path: require('path').join('sessions')
         }),
         cookie: {
             secure: false,
@@ -43,6 +43,8 @@ app.use(
     express.static('public'),
 )
 
+console.log(require('path').join('sessions'))
+
 app.use(middlewareGlobal)
 
 app.use('/toughts', toughtsRoutes)
@@ -51,6 +53,6 @@ app.get('/', ToughtController.showToughts)
 
 
 conn
-    .sync(/* {force: true} */)
+    .sync()
     .then(() => { app.listen(3000) })
     .catch((err) => { console.log(err) })

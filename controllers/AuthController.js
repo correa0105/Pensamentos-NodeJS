@@ -39,7 +39,6 @@ module.exports = class ToughtController {
         } catch (err) {
             console.err
         }
-
     }
 
     static async register(req, res) {
